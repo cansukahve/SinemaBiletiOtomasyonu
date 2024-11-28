@@ -117,20 +117,18 @@ namespace SinemaBiletOtomasyonu
                 string posterPath = movie["PosterPath"].ToString();
                 if (!string.IsNullOrEmpty(posterPath))
                 {
-                    // Uygulama dizinindeki Images klasörünü referans al
-                    string basePath = Path.Combine(Application.StartupPath, "Images");
-                    string fullPath = Path.Combine(basePath, Path.GetFileName(posterPath));
-                    
-                    if (File.Exists(fullPath))
+                    // Resources/Movies klasöründen resmi yükle
+                    string resourcePath = Path.Combine(Application.StartupPath, "Resources", "Movies", posterPath);
+                    if (File.Exists(resourcePath))
                     {
-                        using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
+                        using (var stream = new FileStream(resourcePath, FileMode.Open, FileAccess.Read))
                         {
                             posterBox.Image = Image.FromStream(stream);
                         }
                     }
                     else
                     {
-                        // Varsayılan resim
+                        Console.WriteLine($"Resim bulunamadı: {resourcePath}");
                         posterBox.BackColor = Color.LightGray;
                         posterBox.Image = null;
                     }
@@ -143,7 +141,6 @@ namespace SinemaBiletOtomasyonu
             }
             catch (Exception ex)
             {
-                // Hata durumunda gri arka plan
                 posterBox.BackColor = Color.LightGray;
                 posterBox.Image = null;
                 Console.WriteLine($"Resim yükleme hatası: {ex.Message}");
