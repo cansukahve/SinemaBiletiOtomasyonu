@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
 
@@ -25,41 +26,76 @@ namespace SinemaBiletOtomasyonu
 
         private void InitializeMovieContainer()
         {
-            // Ana panel
+            // Ana panel - Gradient arka plan
             Panel mainPanel = new Panel();
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.BackColor = Color.FromArgb(240, 240, 240);
+            mainPanel.Paint += (sender, e) =>
+            {
+                using (LinearGradientBrush brush = new LinearGradientBrush(
+                    mainPanel.ClientRectangle,
+                    Color.FromArgb(240, 242, 255),  // Açık mor-mavi
+                    Color.FromArgb(220, 222, 245),  // Biraz daha koyu mor-mavi
+                    LinearGradientMode.Vertical))
+                {
+                    e.Graphics.FillRectangle(brush, mainPanel.ClientRectangle);
+                }
+            };
             this.Controls.Add(mainPanel);
 
+            // Başlık Panel
+            Panel titlePanel = new Panel
+            {
+                Height = 80, // Başlık panel yüksekliğini azalttım
+                Dock = DockStyle.Top,
+                BackColor = Color.FromArgb(88, 86, 214) // Koyu mor
+            };
+            mainPanel.Controls.Add(titlePanel);
+
             // Başlık
-            Label titleLabel = new Label();
-            titleLabel.Text = "Vizyondaki Filmler";
-            titleLabel.Font = new Font("Arial", 24, FontStyle.Bold);
-            titleLabel.AutoSize = true;
-            titleLabel.Location = new Point(50, 30);
-            mainPanel.Controls.Add(titleLabel);
+            Label titleLabel = new Label
+            {
+                Text = "🎬 Vizyondaki Filmler 🎥",
+                Font = new Font("Segoe UI", 22, FontStyle.Bold), // Font boyutunu biraz küçülttüm
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new Point(50, 25) // Konumu yukarı çektim
+            };
+            titlePanel.Controls.Add(titleLabel);
+            titleLabel.Location = new Point((titlePanel.Width - titleLabel.Width) / 2, (titlePanel.Height - titleLabel.Height) / 2);
+            titlePanel.Resize += (s, e) => titleLabel.Location = new Point((titlePanel.Width - titleLabel.Width) / 2, (titlePanel.Height - titleLabel.Height) / 2);
+
+            // Container için panel
+            Panel containerPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(0, 20, 0, 0), // Üstten boşluk ekledik
+                BackColor = Color.Transparent
+            };
+            mainPanel.Controls.Add(containerPanel);
 
             // Film container
-            movieContainer = new FlowLayoutPanel();
-            movieContainer.AutoScroll = true;
-            movieContainer.WrapContents = true;
-            movieContainer.Padding = new Padding(20);
-            movieContainer.Location = new Point(50, 100);
-            movieContainer.Size = new Size(
-                mainPanel.Width - 100,
-                mainPanel.Height - 150
-            );
-            movieContainer.BackColor = Color.White;
-            mainPanel.Controls.Add(movieContainer);
-
-            // Form yeniden boyutlandırıldığında container'ı güncelle
-            this.Resize += (s, e) =>
+            movieContainer = new FlowLayoutPanel
             {
-                movieContainer.Size = new Size(
-                    mainPanel.Width - 100,
-                    mainPanel.Height - 150
-                );
+                AutoScroll = true,
+                WrapContents = true,
+                Padding = new Padding(20),
+                Dock = DockStyle.Fill,
+                BackColor = Color.Transparent,
+                AutoScrollMargin = new Size(0, 20)
             };
+            containerPanel.Controls.Add(movieContainer);
+
+            // Alt bilgi
+            Label footerLabel = new Label
+            {
+                Text = "🍿 Sinema Bilet Otomasyonu 🎬",
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(88, 86, 214),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Bottom,
+                Height = 40
+            };
+            mainPanel.Controls.Add(footerLabel);
         }
 
         private void LoadMovies()
@@ -98,18 +134,40 @@ namespace SinemaBiletOtomasyonu
             Panel cardPanel = new Panel
             {
                 Width = 300,
-                Height = 400,
-                BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(10)
+                Height = 450,
+                Margin = new Padding(15),
+                BackColor = Color.White
+            };
+
+            // Yuvarlak köşeli panel çizimi
+            cardPanel.Paint += (sender, e) =>
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var path = new GraphicsPath())
+                {
+                    int radius = 10;
+                    Rectangle rect = cardPanel.ClientRectangle;
+                    path.AddArc(rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+                    path.AddArc(rect.Right - radius * 2, rect.Y, radius * 2, radius * 2, 270, 90);
+                    path.AddArc(rect.Right - radius * 2, rect.Bottom - radius * 2, radius * 2, radius * 2, 0, 90);
+                    path.AddArc(rect.X, rect.Bottom - radius * 2, radius * 2, radius * 2, 90, 90);
+                    path.CloseFigure();
+                    
+                    using (var brush = new SolidBrush(cardPanel.BackColor))
+                    {
+                        e.Graphics.FillPath(brush, path);
+                    }
+                }
             };
 
             // Film afişi için PictureBox
             PictureBox posterBox = new PictureBox
             {
                 Width = 280,
-                Height = 250,
+                Height = 280,
                 SizeMode = PictureBoxSizeMode.Zoom,
-                Location = new Point(10, 10)
+                Location = new Point(10, 10),
+                BackColor = Color.Transparent
             };
 
             try
@@ -150,51 +208,58 @@ namespace SinemaBiletOtomasyonu
             Label titleLabel = new Label
             {
                 Text = movie["MovieName"].ToString(),
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 AutoSize = false,
                 Width = 280,
-                Height = 25,
+                Height = 30,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Location = new Point(10, 270)
+                Location = new Point(10, 300),
+                ForeColor = Color.FromArgb(88, 86, 214)
             };
 
             // Gösterim zamanı için Label
             Label timeLabel = new Label
             {
                 Text = "Gösterim: " + Convert.ToDateTime(movie["ShowTime"]).ToString("dd.MM.yyyy HH:mm"),
-                Font = new Font("Segoe UI", 10),
+                Font = new Font("Segoe UI", 11),
                 AutoSize = false,
                 Width = 280,
-                Height = 20,
+                Height = 25,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Location = new Point(10, 300)
+                Location = new Point(10, 335),
+                ForeColor = Color.FromArgb(100, 100, 100)
             };
 
             // Fiyat için Label
             Label priceLabel = new Label
             {
-                Text = "Fiyat: ₺" + movie["Price"].ToString(),
-                Font = new Font("Segoe UI", 10),
-                ForeColor = Color.Green,
+                Text = "₺" + movie["Price"].ToString(),
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(92, 184, 92),
                 AutoSize = false,
                 Width = 280,
-                Height = 20,
+                Height = 25,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Location = new Point(10, 325)
+                Location = new Point(10, 365)
             };
 
             // Bilet Al butonu
             Button buyButton = new Button
             {
-                Text = "Bilet Al",
-                Width = 280,
-                Height = 35,
-                BackColor = Color.FromArgb(92, 184, 92),
+                Text = "🎟️ Bilet Al",
+                Width = 260,
+                Height = 40,
+                BackColor = Color.FromArgb(88, 86, 214),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Location = new Point(10, 350)
+                Font = new Font("Segoe UI", 12),
+                Location = new Point(20, 395)
             };
             buyButton.FlatAppearance.BorderSize = 0;
+
+            // Hover efekti
+            buyButton.MouseEnter += (s, e) => buyButton.BackColor = Color.FromArgb(149, 147, 230);
+            buyButton.MouseLeave += (s, e) => buyButton.BackColor = Color.FromArgb(88, 86, 214);
 
             // Butona tıklama olayı
             buyButton.Click += (sender, e) =>
@@ -211,13 +276,7 @@ namespace SinemaBiletOtomasyonu
             };
 
             // Kontrolleri panel'e ekle
-            cardPanel.Controls.Add(posterBox);
-            cardPanel.Controls.Add(titleLabel);
-            cardPanel.Controls.Add(timeLabel);
-            cardPanel.Controls.Add(priceLabel);
-            cardPanel.Controls.Add(buyButton);
-
-            // Panel'i FlowLayoutPanel'e ekle
+            cardPanel.Controls.AddRange(new Control[] { posterBox, titleLabel, timeLabel, priceLabel, buyButton });
             movieContainer.Controls.Add(cardPanel);
         }
     }
