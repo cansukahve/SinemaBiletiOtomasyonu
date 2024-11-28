@@ -115,20 +115,38 @@ namespace SinemaBiletOtomasyonu
             try
             {
                 string posterPath = movie["PosterPath"].ToString();
-                if (File.Exists(posterPath))
+                if (!string.IsNullOrEmpty(posterPath))
                 {
-                    posterBox.Image = Image.FromFile(posterPath);
+                    // Uygulama dizinindeki Images klasörünü referans al
+                    string basePath = Path.Combine(Application.StartupPath, "Images");
+                    string fullPath = Path.Combine(basePath, Path.GetFileName(posterPath));
+                    
+                    if (File.Exists(fullPath))
+                    {
+                        using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
+                        {
+                            posterBox.Image = Image.FromStream(stream);
+                        }
+                    }
+                    else
+                    {
+                        // Varsayılan resim
+                        posterBox.BackColor = Color.LightGray;
+                        posterBox.Image = null;
+                    }
                 }
                 else
                 {
-                    // Varsayılan resim - şimdilik boş bırakıyoruz
                     posterBox.BackColor = Color.LightGray;
+                    posterBox.Image = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 // Hata durumunda gri arka plan
                 posterBox.BackColor = Color.LightGray;
+                posterBox.Image = null;
+                Console.WriteLine($"Resim yükleme hatası: {ex.Message}");
             }
 
             // Film başlığı için Label
