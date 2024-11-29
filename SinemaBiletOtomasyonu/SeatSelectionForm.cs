@@ -161,6 +161,8 @@ namespace SinemaBiletOtomasyonu
             mainPanel.Controls.Add(bottomPanel, 0, 2);
 
             this.Controls.Add(mainPanel);
+
+            LoadSeatStatus();
         }
 
         private Panel CreateLegendItem(string text, Color color)
