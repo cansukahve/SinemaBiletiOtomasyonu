@@ -12,6 +12,8 @@ namespace SinemaBiletOtomasyonu
         private int _movieId;
         private string _seatNumber;
         private decimal _price;
+        private Color primaryColor = Color.FromArgb(51, 122, 183);
+        private Color secondaryColor = Color.FromArgb(217, 83, 79);
 
         public TicketDetailsForm(int userId, int movieId, string seatNumber, decimal price)
         {
@@ -36,11 +38,23 @@ namespace SinemaBiletOtomasyonu
                 {
                     Dock = DockStyle.Fill,
                     ColumnCount = 1,
-                    RowCount = 2,
+                    RowCount = 3,
                     Padding = new Padding(20)
                 };
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 80F));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
                 mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+
+                // Başlık
+                Label lblTitle = new Label
+                {
+                    Text = "Bilet Detayları",
+                    Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                    ForeColor = primaryColor,
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
+                mainPanel.Controls.Add(lblTitle, 0, 0);
 
                 // Bilet detayları paneli
                 Panel detailsPanel = new Panel
@@ -98,7 +112,7 @@ namespace SinemaBiletOtomasyonu
                 }
 
                 detailsPanel.Controls.Add(flowPanel);
-                mainPanel.Controls.Add(detailsPanel, 0, 0);
+                mainPanel.Controls.Add(detailsPanel, 0, 1);
 
                 // Butonlar paneli
                 TableLayoutPanel buttonPanel = new TableLayoutPanel
@@ -106,8 +120,8 @@ namespace SinemaBiletOtomasyonu
                     Dock = DockStyle.Fill,
                     ColumnCount = 2,
                     RowCount = 1,
-                    BackColor = Color.White,
-                    Height = 40
+                    BackColor = Color.Transparent,
+                    Height = 50
                 };
                 buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
                 buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -115,16 +129,17 @@ namespace SinemaBiletOtomasyonu
                 // Film Listesine Dön butonu
                 Button btnBack = new Button
                 {
-                    Text = "Film Listesine Dön",
+                    Text = "Geri",
                     Width = 120,
                     Height = 35,
                     Margin = new Padding(5),
-                    BackColor = Color.FromArgb(51, 122, 183),
+                    BackColor = secondaryColor,
                     ForeColor = Color.White,
                     FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Arial", 10),
+                    Font = new Font("Segoe UI", 10),
                     Anchor = AnchorStyles.None
                 };
+                btnBack.FlatAppearance.BorderSize = 0;
                 btnBack.Click += (s, e) =>
                 {
                     MovieSelectionForm movieForm = new MovieSelectionForm(_userId);
@@ -140,16 +155,17 @@ namespace SinemaBiletOtomasyonu
                     Width = 100,
                     Height = 35,
                     Margin = new Padding(5),
-                    BackColor = Color.FromArgb(217, 83, 79),
+                    BackColor = primaryColor,
                     ForeColor = Color.White,
                     FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Arial", 10),
+                    Font = new Font("Segoe UI", 10),
                     Anchor = AnchorStyles.None
                 };
+                btnClose.FlatAppearance.BorderSize = 0;
                 btnClose.Click += (s, e) => this.Close();
                 buttonPanel.Controls.Add(btnClose, 1, 0);
 
-                mainPanel.Controls.Add(buttonPanel, 0, 1);
+                mainPanel.Controls.Add(buttonPanel, 0, 2);
                 this.Controls.Add(mainPanel);
             }
             catch (Exception ex)
