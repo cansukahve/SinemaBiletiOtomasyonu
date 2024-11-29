@@ -15,6 +15,11 @@ namespace SinemaBiletOtomasyonu
         private Button selectedSeat = null;
         private string connectionString;
 
+        // Renk paleti
+        private Color primaryColor = Color.FromArgb(88, 86, 214);    // Koyu mor
+        private Color secondaryColor = Color.FromArgb(149, 147, 230); // Orta mor
+        private Color backgroundColor = Color.FromArgb(240, 242, 255); // Açık mor-mavi
+
         public SeatSelectionForm(int movieId, string movieName, DateTime showTime, decimal price, int userId)
         {
             InitializeComponent();
@@ -37,7 +42,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 ColumnCount = 1,
                 RowCount = 3,
-                BackColor = Color.White
+                BackColor = backgroundColor
             };
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));  // Üst bilgi için
@@ -48,10 +53,11 @@ namespace SinemaBiletOtomasyonu
             Label screenLabel = new Label
             {
                 Text = "PERDE",
-                Font = new Font("Arial", 14, FontStyle.Bold),
+                Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
-                BackColor = Color.LightGray,
+                ForeColor = Color.White,
+                BackColor = primaryColor,
                 Margin = new Padding(100, 10, 100, 20)
             };
             mainPanel.Controls.Add(screenLabel, 0, 0);
@@ -62,7 +68,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 ColumnCount = 5,
                 RowCount = 5,
-                BackColor = Color.White
+                BackColor = Color.Transparent
             };
 
             // Koltuk paneli için stil ayarları
@@ -84,9 +90,12 @@ namespace SinemaBiletOtomasyonu
                         Text = seatNumber,
                         Dock = DockStyle.Fill,
                         Margin = new Padding(5),
-                        BackColor = Color.LightGreen,
-                        FlatStyle = FlatStyle.Flat
+                        BackColor = secondaryColor,
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Segoe UI", 9, FontStyle.Bold)
                     };
+                    seatButton.FlatAppearance.BorderSize = 0;
                     seatButton.Click += SeatButton_Click;
                     seatPanel.Controls.Add(seatButton, col, row);
                 }
@@ -99,7 +108,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 ColumnCount = 4,
                 RowCount = 1,
-                BackColor = Color.White
+                BackColor = Color.Transparent
             };
             bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
@@ -110,19 +119,20 @@ namespace SinemaBiletOtomasyonu
             FlowLayoutPanel legendPanel = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.LeftToRight
+                FlowDirection = FlowDirection.LeftToRight,
+                BackColor = Color.Transparent
             };
 
             // Boş koltuk göstergesi
-            Panel emptyLegend = CreateLegendItem("Boş Koltuk", Color.LightGreen);
+            Panel emptyLegend = CreateLegendItem("Boş Koltuk", secondaryColor);
             legendPanel.Controls.Add(emptyLegend);
 
             // Dolu koltuk göstergesi
-            Panel occupiedLegend = CreateLegendItem("Dolu Koltuk", Color.Red);
+            Panel occupiedLegend = CreateLegendItem("Dolu Koltuk", Color.FromArgb(255, 99, 99));
             legendPanel.Controls.Add(occupiedLegend);
 
             // Seçili koltuk göstergesi
-            Panel selectedLegend = CreateLegendItem("Seçili Koltuk", Color.Yellow);
+            Panel selectedLegend = CreateLegendItem("Seçili Koltuk", Color.FromArgb(255, 193, 7));
             legendPanel.Controls.Add(selectedLegend);
 
             bottomPanel.Controls.Add(legendPanel, 1, 0);
@@ -131,12 +141,15 @@ namespace SinemaBiletOtomasyonu
             // Geri butonu
             Button backButton = new Button
             {
-                Text = "Geri",
+                Text = "← Geri",
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10),
-                BackColor = Color.LightGray,
-                FlatStyle = FlatStyle.Flat
+                BackColor = secondaryColor,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10)
             };
+            backButton.FlatAppearance.BorderSize = 0;
             backButton.Click += (s, e) => 
             {
                 MovieSelectionForm movieForm = new MovieSelectionForm(_userId);
@@ -148,13 +161,15 @@ namespace SinemaBiletOtomasyonu
             // Ödemeye Geç butonu
             Button paymentButton = new Button
             {
-                Text = "Ödemeye Geç",
+                Text = "Ödemeye Geç →",
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10),
-                BackColor = Color.Green,
+                BackColor = primaryColor,
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10)
             };
+            paymentButton.FlatAppearance.BorderSize = 0;
             paymentButton.Click += PaymentButton_Click;
             bottomPanel.Controls.Add(paymentButton, 3, 0);
 
@@ -199,7 +214,7 @@ namespace SinemaBiletOtomasyonu
         {
             Button clickedSeat = (Button)sender;
 
-            if (clickedSeat.BackColor == Color.Red)
+            if (clickedSeat.BackColor == Color.FromArgb(255, 99, 99))
             {
                 MessageBox.Show("Bu koltuk dolu!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -207,11 +222,11 @@ namespace SinemaBiletOtomasyonu
 
             if (selectedSeat != null)
             {
-                selectedSeat.BackColor = Color.LightGreen;
+                selectedSeat.BackColor = secondaryColor;
             }
 
             selectedSeat = clickedSeat;
-            selectedSeat.BackColor = Color.Yellow;
+            selectedSeat.BackColor = Color.FromArgb(255, 193, 7);
 
             var result = MessageBox.Show(
                 $"{selectedSeat.Text} numaralı koltuğu seçtiniz. Ödemeye geçmek ister misiniz?",
@@ -225,7 +240,7 @@ namespace SinemaBiletOtomasyonu
             }
             else
             {
-                selectedSeat.BackColor = Color.LightGreen;
+                selectedSeat.BackColor = secondaryColor;
                 selectedSeat = null;
             }
         }
@@ -260,7 +275,7 @@ namespace SinemaBiletOtomasyonu
                                                 {
                                                     if (seatControl is Button button && button.Text == seatNumber)
                                                     {
-                                                        button.BackColor = isOccupied ? Color.Red : Color.LightGreen;
+                                                        button.BackColor = isOccupied ? Color.FromArgb(255, 99, 99) : secondaryColor;
                                                         break;
                                                     }
                                                 }

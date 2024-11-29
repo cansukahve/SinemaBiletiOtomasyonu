@@ -13,6 +13,9 @@ namespace SinemaBiletOtomasyonu
         private readonly int _userId;
         private string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=SinemaDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
         private TableLayoutPanel mainPanel;
+        private Color primaryColor = Color.FromArgb(88, 86, 214);    // Koyu mor
+        private Color secondaryColor = Color.FromArgb(149, 147, 230); // Orta mor
+        private Color backgroundColor = Color.FromArgb(240, 242, 255); // Açık mor-mavi
 
         public PaymentForm(int movieId, string seatNumber, decimal price, int userId)
         {
@@ -29,12 +32,13 @@ namespace SinemaBiletOtomasyonu
             this.Text = "Ödeme";
             this.Size = new Size(400, 500);
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = backgroundColor;
 
-            mainPanel = new TableLayoutPanel
+            TableLayoutPanel mainPanel = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 2,
-                RowCount = 7,
+                RowCount = 6,
                 Padding = new Padding(20),
                 CellBorderStyle = TableLayoutPanelCellBorderStyle.None
             };
@@ -46,9 +50,10 @@ namespace SinemaBiletOtomasyonu
             Label lblTitle = new Label
             {
                 Text = "Ödeme Bilgileri",
-                Font = new Font("Arial", 16, FontStyle.Bold),
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
                 Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleCenter
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = primaryColor
             };
             mainPanel.Controls.Add(lblTitle);
             mainPanel.SetColumnSpan(lblTitle, 2);
@@ -57,7 +62,7 @@ namespace SinemaBiletOtomasyonu
             Label lblPrice = new Label
             {
                 Text = "Tutar:",
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
@@ -66,7 +71,7 @@ namespace SinemaBiletOtomasyonu
             Label lblPriceValue = new Label
             {
                 Text = $"{_price:C}",
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
@@ -76,7 +81,7 @@ namespace SinemaBiletOtomasyonu
             Label lblCardNumber = new Label
             {
                 Text = "Kart Numarası:",
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
@@ -84,7 +89,7 @@ namespace SinemaBiletOtomasyonu
 
             TextBox txtCardNumber = new TextBox
             {
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill
             };
             mainPanel.Controls.Add(txtCardNumber);
@@ -93,7 +98,7 @@ namespace SinemaBiletOtomasyonu
             Label lblExpiry = new Label
             {
                 Text = "Son Kullanma:",
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
@@ -101,7 +106,7 @@ namespace SinemaBiletOtomasyonu
 
             TextBox txtExpiry = new TextBox
             {
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 Text = "MM/YY",
                 ForeColor = Color.Gray
@@ -126,7 +131,7 @@ namespace SinemaBiletOtomasyonu
             Label lblCVV = new Label
             {
                 Text = "CVV:",
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
@@ -134,20 +139,22 @@ namespace SinemaBiletOtomasyonu
 
             TextBox txtCVV = new TextBox
             {
-                Font = new Font("Arial", 12),
+                Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill,
                 MaxLength = 3
             };
             mainPanel.Controls.Add(txtCVV);
 
+            this.Controls.Add(mainPanel);
+
             // Alt panel için butonlar
             TableLayoutPanel buttonPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
+                Dock = DockStyle.Bottom,
                 ColumnCount = 2,
                 RowCount = 1,
-                BackColor = Color.White,
-                Height = 40,
+                BackColor = Color.Transparent,
+                Height = 50,
                 Margin = new Padding(0, 10, 0, 10)
             };
             buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -160,11 +167,13 @@ namespace SinemaBiletOtomasyonu
                 Width = 100,
                 Height = 35,
                 Margin = new Padding(10, 5, 5, 5),
-                BackColor = Color.LightGray,
+                BackColor = secondaryColor,
+                ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Arial", 10),
+                Font = new Font("Segoe UI", 10),
                 Anchor = AnchorStyles.None
             };
+            backButton.FlatAppearance.BorderSize = 0;
             backButton.Click += (s, e) => this.Close();
             buttonPanel.Controls.Add(backButton, 0, 0);
 
@@ -175,19 +184,17 @@ namespace SinemaBiletOtomasyonu
                 Width = 100,
                 Height = 35,
                 Margin = new Padding(5, 5, 10, 5),
-                BackColor = Color.Green,
+                BackColor = primaryColor,
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Arial", 10),
+                Font = new Font("Segoe UI", 10),
                 Anchor = AnchorStyles.None
             };
+            payButton.FlatAppearance.BorderSize = 0;
             payButton.Click += PayButton_Click;
             buttonPanel.Controls.Add(payButton, 1, 0);
 
-            mainPanel.Controls.Add(buttonPanel, 0, 2);
-            mainPanel.SetColumnSpan(buttonPanel, 2);
-
-            this.Controls.Add(mainPanel);
+            this.Controls.Add(buttonPanel);
         }
 
         private void PayButton_Click(object sender, EventArgs e)
