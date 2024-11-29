@@ -28,13 +28,14 @@ namespace SinemaBiletOtomasyonu
             // Ana panel
             Panel mainPanel = new Panel();
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.BackColor = Color.FromArgb(240, 240, 240);
+            mainPanel.BackColor = Color.FromArgb(240, 242, 255); // Soft Purple-Blue
             this.Controls.Add(mainPanel);
 
             // Başlık
             Label titleLabel = new Label();
             titleLabel.Text = "Vizyondaki Filmler";
-            titleLabel.Font = new Font("Arial", 24, FontStyle.Bold);
+            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(88, 86, 214); // Dark Purple
             titleLabel.AutoSize = true;
             titleLabel.Location = new Point(50, 30);
             mainPanel.Controls.Add(titleLabel);
@@ -100,7 +101,8 @@ namespace SinemaBiletOtomasyonu
                 Width = 300,
                 Height = 400,
                 BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(10)
+                Margin = new Padding(10),
+                BackColor = Color.White
             };
 
             // Film afişi için PictureBox
@@ -189,7 +191,7 @@ namespace SinemaBiletOtomasyonu
                 Text = "Bilet Al",
                 Width = 280,
                 Height = 35,
-                BackColor = Color.FromArgb(92, 184, 92),
+                BackColor = Color.FromArgb(149, 147, 230), // Medium Purple
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Location = new Point(10, 350)
