@@ -30,21 +30,22 @@ namespace SinemaBiletOtomasyonu
         private void InitializePaymentControls()
         {
             this.Text = "Ödeme";
-            this.Size = new Size(400, 500);
+            this.Size = new Size(450, 550);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.BackColor = backgroundColor;
 
             TableLayoutPanel mainPanel = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                ColumnCount = 2,
+                ColumnCount = 3,
                 RowCount = 6,
                 Padding = new Padding(20),
                 CellBorderStyle = TableLayoutPanelCellBorderStyle.None
             };
 
+            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
 
             // Başlık
             Label lblTitle = new Label
@@ -55,8 +56,8 @@ namespace SinemaBiletOtomasyonu
                 TextAlign = ContentAlignment.MiddleCenter,
                 ForeColor = primaryColor
             };
-            mainPanel.Controls.Add(lblTitle);
-            mainPanel.SetColumnSpan(lblTitle, 2);
+            mainPanel.Controls.Add(lblTitle, 0, 0);
+            mainPanel.SetColumnSpan(lblTitle, 3);
 
             // Tutar
             Label lblPrice = new Label
@@ -66,7 +67,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            mainPanel.Controls.Add(lblPrice);
+            mainPanel.Controls.Add(lblPrice, 1, 1);
 
             Label lblPriceValue = new Label
             {
@@ -75,7 +76,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            mainPanel.Controls.Add(lblPriceValue);
+            mainPanel.Controls.Add(lblPriceValue, 2, 1);
 
             // Kart Numarası
             Label lblCardNumber = new Label
@@ -85,14 +86,14 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            mainPanel.Controls.Add(lblCardNumber);
+            mainPanel.Controls.Add(lblCardNumber, 1, 2);
 
             TextBox txtCardNumber = new TextBox
             {
                 Font = new Font("Segoe UI", 12),
                 Dock = DockStyle.Fill
             };
-            mainPanel.Controls.Add(txtCardNumber);
+            mainPanel.Controls.Add(txtCardNumber, 2, 2);
 
             // Son Kullanma Tarihi
             Label lblExpiry = new Label
@@ -102,7 +103,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            mainPanel.Controls.Add(lblExpiry);
+            mainPanel.Controls.Add(lblExpiry, 1, 3);
 
             TextBox txtExpiry = new TextBox
             {
@@ -125,7 +126,7 @@ namespace SinemaBiletOtomasyonu
                     txtExpiry.ForeColor = Color.Gray;
                 }
             };
-            mainPanel.Controls.Add(txtExpiry);
+            mainPanel.Controls.Add(txtExpiry, 2, 3);
 
             // CVV
             Label lblCVV = new Label
@@ -135,7 +136,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            mainPanel.Controls.Add(lblCVV);
+            mainPanel.Controls.Add(lblCVV, 1, 4);
 
             TextBox txtCVV = new TextBox
             {
@@ -143,7 +144,7 @@ namespace SinemaBiletOtomasyonu
                 Dock = DockStyle.Fill,
                 MaxLength = 3
             };
-            mainPanel.Controls.Add(txtCVV);
+            mainPanel.Controls.Add(txtCVV, 2, 4);
 
             this.Controls.Add(mainPanel);
 
