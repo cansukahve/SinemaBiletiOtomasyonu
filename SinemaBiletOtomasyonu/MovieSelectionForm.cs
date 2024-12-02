@@ -222,5 +222,10 @@ namespace SinemaBiletOtomasyonu
             // Panel'i FlowLayoutPanel'e ekle
             movieContainer.Controls.Add(cardPanel);
         }
+
+        private void MovieSelectionForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
