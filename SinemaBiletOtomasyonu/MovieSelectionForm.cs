@@ -9,6 +9,7 @@ namespace SinemaBiletOtomasyonu
 {
     public partial class MovieSelectionForm : Form
     {
+        // Veritabanı bağlantısı için bağlantı dizesi
         private readonly string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=SinemaDatabase;Integrated Security=True";
         private readonly int _userId;
         private FlowLayoutPanel movieContainer;
@@ -16,42 +17,42 @@ namespace SinemaBiletOtomasyonu
         public MovieSelectionForm(int userId)
         {
             InitializeComponent();
-            _userId = userId;
-            this.WindowState = FormWindowState.Maximized;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            InitializeMovieContainer();
-            LoadMovies();
+            _userId = userId; // Kullanıcı kimliğini saklar
+            this.WindowState = FormWindowState.Maximized; // Formu tam ekran yapar
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; // Formun kenarlık stilini belirler
+            InitializeMovieContainer(); // Film container'ını başlatır
+            LoadMovies(); // Filmleri yükler
         }
 
         private void InitializeMovieContainer()
         {
             // Ana panel
             Panel mainPanel = new Panel();
-            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Dock = DockStyle.Fill; // Paneli formun tamamına yayar
             mainPanel.BackColor = Color.FromArgb(240, 242, 255); // Soft Purple-Blue
-            this.Controls.Add(mainPanel);
+            this.Controls.Add(mainPanel); // Paneli forma ekler
 
             // Başlık
             Label titleLabel = new Label();
-            titleLabel.Text = "Vizyondaki Filmler";
-            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold);
-            titleLabel.ForeColor = Color.FromArgb(88, 86, 214); // Dark Purple
-            titleLabel.AutoSize = true;
-            titleLabel.Location = new Point(50, 30);
-            mainPanel.Controls.Add(titleLabel);
+            titleLabel.Text = "Vizyondaki Filmler"; // Başlık metni
+            titleLabel.Font = new Font("Segoe UI", 24, FontStyle.Bold); // Yazı tipi, boyutu ve stili
+            titleLabel.ForeColor = Color.FromArgb(88, 86, 214); // Yazı rengi (Dark Purple)
+            titleLabel.AutoSize = true; // Yazının otomatik boyutlandırılmasını sağlar
+            titleLabel.Location = new Point(50, 30); // Başlık konumu
+            mainPanel.Controls.Add(titleLabel); // Başlığı panela ekler
 
             // Film container
             movieContainer = new FlowLayoutPanel();
-            movieContainer.AutoScroll = true;
-            movieContainer.WrapContents = true;
-            movieContainer.Padding = new Padding(20);
-            movieContainer.Location = new Point(50, 100);
+            movieContainer.AutoScroll = true; // Otomatik kaydırma özelliği
+            movieContainer.WrapContents = true; // İçerikleri satırda sığdığında alt satıra geçer
+            movieContainer.Padding = new Padding(20); // İçerikler arasındaki boşluk
+            movieContainer.Location = new Point(50, 100); // Container konumu
             movieContainer.Size = new Size(
                 mainPanel.Width - 100,
                 mainPanel.Height - 150
-            );
-            movieContainer.BackColor = Color.White;
-            mainPanel.Controls.Add(movieContainer);
+            ); // Container boyutu
+            movieContainer.BackColor = Color.White; // Container arka plan rengi
+            mainPanel.Controls.Add(movieContainer); // Container'ı panela ekler
 
             // Form yeniden boyutlandırıldığında container'ı güncelle
             this.Resize += (s, e) =>
@@ -65,7 +66,7 @@ namespace SinemaBiletOtomasyonu
 
         private void LoadMovies()
         {
-            movieContainer.Controls.Clear();
+            movieContainer.Controls.Clear(); // Container'daki tüm kontrolleri temizler
 
             try
             {
@@ -78,11 +79,11 @@ namespace SinemaBiletOtomasyonu
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
                             DataTable moviesTable = new DataTable();
-                            adapter.Fill(moviesTable);
+                            adapter.Fill(moviesTable); // Veritabanından film bilgilerini doldurur
 
                             foreach (DataRow movie in moviesTable.Rows)
                             {
-                                CreateMovieCard(movie);
+                                CreateMovieCard(movie); // Her film için bir kart oluşturur
                             }
                         }
                     }
@@ -225,7 +226,7 @@ namespace SinemaBiletOtomasyonu
 
         private void MovieSelectionForm_Load(object sender, EventArgs e)
         {
-
+            // Form yüklendiğinde yapılacak işlemler (şimdilik boş)
         }
     }
 }

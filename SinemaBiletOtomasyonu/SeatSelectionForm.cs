@@ -29,9 +29,9 @@ namespace SinemaBiletOtomasyonu
             _price = price;
             _userId = userId;
             connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=SinemaDatabase;Integrated Security=True";
-            
-            this.Text = $"{movieName} - Koltuk Seçimi";
-            InitializeSeats();
+
+            this.Text = $"{movieName} - Koltuk Seçimi"; // Form başlığı
+            InitializeSeats(); // Koltukları başlat
         }
 
         private void InitializeSeats()
@@ -39,12 +39,12 @@ namespace SinemaBiletOtomasyonu
             // Ana panel oluşturma
             TableLayoutPanel mainPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 3,
-                BackColor = backgroundColor
+                Dock = DockStyle.Fill, // Paneli formun tamamına yayar
+                ColumnCount = 1, // Sütun sayısı
+                RowCount = 3, // Satır sayısı
+                BackColor = backgroundColor // Arka plan rengi
             };
-            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); // Sütun stili
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));  // Üst bilgi için
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));  // Koltuklar için
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));  // Alt butonlar için
@@ -52,132 +52,132 @@ namespace SinemaBiletOtomasyonu
             // Perde yazısı
             Label screenLabel = new Label
             {
-                Text = "PERDE",
-                Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Dock = DockStyle.Fill,
-                ForeColor = Color.White,
-                BackColor = primaryColor,
-                Margin = new Padding(100, 10, 100, 20)
+                Text = "PERDE", // Etiket metni
+                Font = new Font("Segoe UI", 14, FontStyle.Bold), // Yazı tipi ve boyutu
+                TextAlign = ContentAlignment.MiddleCenter, // Yazının ortalanması
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                ForeColor = Color.White, // Yazı rengi
+                BackColor = primaryColor, // Arka plan rengi
+                Margin = new Padding(100, 10, 100, 20) // Kenar boşlukları
             };
-            mainPanel.Controls.Add(screenLabel, 0, 0);
+            mainPanel.Controls.Add(screenLabel, 0, 0); // Etiketi panela ekler
 
             // Koltuk paneli
             TableLayoutPanel seatPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 5,
-                RowCount = 5,
-                BackColor = Color.Transparent
+                Dock = DockStyle.Fill, // Paneli içine doldurur
+                ColumnCount = 5, // Sütun sayısı
+                RowCount = 5, // Satır sayısı
+                BackColor = Color.Transparent // Arka plan rengi
             };
 
             // Koltuk paneli için stil ayarları
             for (int i = 0; i < 5; i++)
             {
-                seatPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-                seatPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+                seatPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F)); // Sütun stili
+                seatPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 20F)); // Satır stili
             }
 
             // Koltukları oluştur
-            char[] rows = { 'A', 'B', 'C', 'D', 'E' };
+            char[] rows = { 'A', 'B', 'C', 'D', 'E' }; // Satır harfleri
             for (int row = 0; row < 5; row++)
             {
                 for (int col = 0; col < 5; col++)
                 {
-                    string seatNumber = $"{rows[row]}{col + 1}";
+                    string seatNumber = $"{rows[row]}{col + 1}"; // Koltuk numarası
                     Button seatButton = new Button
                     {
-                        Text = seatNumber,
-                        Dock = DockStyle.Fill,
-                        Margin = new Padding(5),
-                        BackColor = secondaryColor,
-                        ForeColor = Color.White,
-                        FlatStyle = FlatStyle.Flat,
-                        Font = new Font("Segoe UI", 9, FontStyle.Bold)
+                        Text = seatNumber, // Buton metni
+                        Dock = DockStyle.Fill, // Butonu paneli doldurur
+                        Margin = new Padding(5), // Kenar boşlukları
+                        BackColor = secondaryColor, // Arka plan rengi
+                        ForeColor = Color.White, // Yazı rengi
+                        FlatStyle = FlatStyle.Flat, // Buton stilini düz yapar
+                        Font = new Font("Segoe UI", 9, FontStyle.Bold) // Yazı tipi ve boyutu
                     };
-                    seatButton.FlatAppearance.BorderSize = 0;
-                    seatButton.Click += SeatButton_Click;
-                    seatPanel.Controls.Add(seatButton, col, row);
+                    seatButton.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+                    seatButton.Click += SeatButton_Click; // Tıklama olayını bağla
+                    seatPanel.Controls.Add(seatButton, col, row); // Butonu panela ekler
                 }
             }
-            mainPanel.Controls.Add(seatPanel, 0, 1);
+            mainPanel.Controls.Add(seatPanel, 0, 1); // Koltuk panelini ana panela ekler
 
             // Alt panel için butonlar ve gösterge
             TableLayoutPanel bottomPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 4,
-                RowCount = 1,
-                BackColor = Color.Transparent
+                Dock = DockStyle.Fill, // Paneli içine doldurur
+                ColumnCount = 4, // Sütun sayısı
+                RowCount = 1, // Satır sayısı
+                BackColor = Color.Transparent // Arka plan rengi
             };
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F)); // Sütun stili
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F)); // Sütun stili
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F)); // Sütun stili
+            bottomPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F)); // Sütun stili
 
             // Koltuk durumu göstergesi
             FlowLayoutPanel legendPanel = new FlowLayoutPanel
             {
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.LeftToRight,
-                BackColor = Color.Transparent
+                Dock = DockStyle.Fill, // Paneli içine doldurur
+                FlowDirection = FlowDirection.LeftToRight, // Akış yönü
+                BackColor = Color.Transparent // Arka plan rengi
             };
 
             // Boş koltuk göstergesi
-            Panel emptyLegend = CreateLegendItem("Boş Koltuk", secondaryColor);
-            legendPanel.Controls.Add(emptyLegend);
+            Panel emptyLegend = CreateLegendItem("Boş Koltuk", secondaryColor); // Gösterge oluştur
+            legendPanel.Controls.Add(emptyLegend); // Göstergeyi panela ekler
 
             // Dolu koltuk göstergesi
-            Panel occupiedLegend = CreateLegendItem("Dolu Koltuk", Color.FromArgb(255, 99, 99));
-            legendPanel.Controls.Add(occupiedLegend);
+            Panel occupiedLegend = CreateLegendItem("Dolu Koltuk", Color.FromArgb(255, 99, 99)); // Gösterge oluştur
+            legendPanel.Controls.Add(occupiedLegend); // Göstergeyi panela ekler
 
             // Seçili koltuk göstergesi
-            Panel selectedLegend = CreateLegendItem("Seçili Koltuk", Color.FromArgb(255, 193, 7));
-            legendPanel.Controls.Add(selectedLegend);
+            Panel selectedLegend = CreateLegendItem("Seçili Koltuk", Color.FromArgb(255, 193, 7)); // Gösterge oluştur
+            legendPanel.Controls.Add(selectedLegend); // Göstergeyi panela ekler
 
-            bottomPanel.Controls.Add(legendPanel, 1, 0);
-            bottomPanel.SetColumnSpan(legendPanel, 2);
+            bottomPanel.Controls.Add(legendPanel, 1, 0); // Gösterge panelini alt panela ekler
+            bottomPanel.SetColumnSpan(legendPanel, 2); // Gösterge panelinin sütunlarını birleştirir
 
             // Geri butonu
             Button backButton = new Button
             {
-                Text = "← Geri",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(10),
-                BackColor = secondaryColor,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10)
+                Text = "← Geri", // Buton metni
+                Dock = DockStyle.Fill, // Butonu paneli doldurur
+                Margin = new Padding(10), // Kenar boşlukları
+                BackColor = secondaryColor, // Arka plan rengi
+                ForeColor = Color.White, // Yazı rengi
+                FlatStyle = FlatStyle.Flat, // Buton stilini düz yapar
+                Font = new Font("Segoe UI", 10) // Yazı tipi ve boyutu
             };
-            backButton.FlatAppearance.BorderSize = 0;
-            backButton.Click += (s, e) => 
+            backButton.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+            backButton.Click += (s, e) =>
             {
                 MovieSelectionForm movieForm = new MovieSelectionForm(_userId);
                 movieForm.Show();
                 this.Close();
             };
-            bottomPanel.Controls.Add(backButton, 0, 0);
+            bottomPanel.Controls.Add(backButton, 0, 0); // Butonu alt panela ekler
 
             // Ödemeye Geç butonu
             Button paymentButton = new Button
             {
-                Text = "Ödemeye Geç →",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(10),
-                BackColor = primaryColor,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10)
+                Text = "Ödemeye Geç →", // Buton metni
+                Dock = DockStyle.Fill, // Butonu paneli doldurur
+                Margin = new Padding(10), // Kenar boşlukları
+                BackColor = primaryColor, // Arka plan rengi
+                ForeColor = Color.White, // Yazı rengi
+                FlatStyle = FlatStyle.Flat, // Buton stilini düz yapar
+                Font = new Font("Segoe UI", 10) // Yazı tipi ve boyutu
             };
-            paymentButton.FlatAppearance.BorderSize = 0;
-            paymentButton.Click += PaymentButton_Click;
-            bottomPanel.Controls.Add(paymentButton, 3, 0);
+            paymentButton.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+            paymentButton.Click += PaymentButton_Click; // Tıklama olayını bağla
+            bottomPanel.Controls.Add(paymentButton, 3, 0); // Butonu alt panela ekler
 
-            mainPanel.Controls.Add(bottomPanel, 0, 2);
+            mainPanel.Controls.Add(bottomPanel, 0, 2); // Alt paneli ana panela ekler
 
-            this.Controls.Add(mainPanel);
+            this.Controls.Add(mainPanel); // Ana paneli forma ekler
 
-            LoadSeatStatus();
+            LoadSeatStatus(); // Koltuk durumlarını yükle
         }
 
         private Panel CreateLegendItem(string text, Color color)

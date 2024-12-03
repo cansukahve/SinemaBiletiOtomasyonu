@@ -7,11 +7,16 @@ namespace SinemaBiletOtomasyonu
 {
     public partial class PaymentForm : Form
     {
+        // Film ID'si, koltuk numarası, fiyat ve kullanıcı ID'si
         private readonly int _movieId;
         private readonly string _seatNumber;
         private readonly decimal _price;
         private readonly int _userId;
+
+        // Veritabanı bağlantısı için bağlantı dizesi
         private string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=SinemaDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
+
+        // Ana panel ve renkler
         private TableLayoutPanel mainPanel;
         private Color primaryColor = Color.FromArgb(88, 86, 214);    // Koyu mor
         private Color secondaryColor = Color.FromArgb(149, 147, 230); // Orta mor
@@ -20,29 +25,31 @@ namespace SinemaBiletOtomasyonu
         public PaymentForm(int movieId, string seatNumber, decimal price, int userId)
         {
             InitializeComponent();
-            _movieId = movieId;
-            _seatNumber = seatNumber;
-            _price = price;
-            _userId = userId;
-            InitializePaymentControls();
+            _movieId = movieId; // Film ID'sini saklar
+            _seatNumber = seatNumber; // Koltuk numarasını saklar
+            _price = price; // Fiyatı saklar
+            _userId = userId; // Kullanıcı ID'sini saklar
+            InitializePaymentControls(); // Ödeme kontrollerini başlatır
         }
 
         private void InitializePaymentControls()
         {
-            this.Text = "Ödeme";
-            this.Size = new Size(450, 550);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.BackColor = backgroundColor;
+            this.Text = "Ödeme"; // Form başlığı
+            this.Size = new Size(450, 550); // Form boyutu
+            this.StartPosition = FormStartPosition.CenterScreen; // Formun ekranın ortasında açılmasını sağlar
+            this.BackColor = backgroundColor; // Formun arka plan rengi
 
-            TableLayoutPanel mainPanel = new TableLayoutPanel
+            // Ana panel
+            mainPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 3,
-                RowCount = 6,
-                Padding = new Padding(20),
-                CellBorderStyle = TableLayoutPanelCellBorderStyle.None
+                Dock = DockStyle.Fill, // Paneli formun tamamına yayar
+                ColumnCount = 3, // Sütun sayısı
+                RowCount = 6, // Satır sayısı
+                Padding = new Padding(20), // İçerikler arasındaki boşluk
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.None // Hücre kenarlık stili
             };
 
+            // Sütun stilleri
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -50,67 +57,67 @@ namespace SinemaBiletOtomasyonu
             // Başlık
             Label lblTitle = new Label
             {
-                Text = "Ödeme Bilgileri",
-                Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleCenter,
-                ForeColor = primaryColor
+                Text = "Ödeme Bilgileri", // Başlık metni
+                Font = new Font("Segoe UI", 16, FontStyle.Bold), // Yazı tipi, boyutu ve stili
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleCenter, // Yazının ortalanması
+                ForeColor = primaryColor // Yazı rengi
             };
-            mainPanel.Controls.Add(lblTitle, 0, 0);
-            mainPanel.SetColumnSpan(lblTitle, 3);
+            mainPanel.Controls.Add(lblTitle, 0, 0); // Başlığı panela ekler
+            mainPanel.SetColumnSpan(lblTitle, 3); // Başlığın üç sütunu kaplamasını sağlar
 
             // Tutar
             Label lblPrice = new Label
             {
-                Text = "Tutar:",
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = "Tutar:", // Etiket metni
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleLeft // Yazının sola hizalanması
             };
-            mainPanel.Controls.Add(lblPrice, 1, 1);
+            mainPanel.Controls.Add(lblPrice, 1, 1); // Etiketi panela ekler
 
             Label lblPriceValue = new Label
             {
-                Text = $"{_price:C}",
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = $"{_price:C}", // Fiyatı para birimi olarak gösterir
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleLeft // Yazının sola hizalanması
             };
-            mainPanel.Controls.Add(lblPriceValue, 2, 1);
+            mainPanel.Controls.Add(lblPriceValue, 2, 1); // Fiyatı panela ekler
 
             // Kart Numarası
             Label lblCardNumber = new Label
             {
-                Text = "Kart Numarası:",
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = "Kart Numarası:", // Etiket metni
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleLeft // Yazının sola hizalanması
             };
-            mainPanel.Controls.Add(lblCardNumber, 1, 2);
+            mainPanel.Controls.Add(lblCardNumber, 1, 2); // Etiketi panela ekler
 
             TextBox txtCardNumber = new TextBox
             {
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill // Metin kutusunun paneli doldurmasını sağlar
             };
-            mainPanel.Controls.Add(txtCardNumber, 2, 2);
+            mainPanel.Controls.Add(txtCardNumber, 2, 2); // Metin kutusunu panela ekler
 
             // Son Kullanma Tarihi
             Label lblExpiry = new Label
             {
-                Text = "Son Kullanma:",
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = "Son Kullanma:", // Etiket metni
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleLeft // Yazının sola hizalanması
             };
-            mainPanel.Controls.Add(lblExpiry, 1, 3);
+            mainPanel.Controls.Add(lblExpiry, 1, 3); // Etiketi panela ekler
 
             TextBox txtExpiry = new TextBox
             {
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                Text = "MM/YY",
-                ForeColor = Color.Gray
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Metin kutusunun paneli doldurmasını sağlar
+                Text = "MM/YY", // Varsayılan metin
+                ForeColor = Color.Gray // Yazı rengi
             };
             txtExpiry.GotFocus += (s, e) => {
                 if (txtExpiry.Text == "MM/YY")
@@ -126,37 +133,37 @@ namespace SinemaBiletOtomasyonu
                     txtExpiry.ForeColor = Color.Gray;
                 }
             };
-            mainPanel.Controls.Add(txtExpiry, 2, 3);
+            mainPanel.Controls.Add(txtExpiry, 2, 3); // Metin kutusunu panela ekler
 
             // CVV
             Label lblCVV = new Label
             {
-                Text = "CVV:",
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = "CVV:", // Etiket metni
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                TextAlign = ContentAlignment.MiddleLeft // Yazının sola hizalanması
             };
-            mainPanel.Controls.Add(lblCVV, 1, 4);
+            mainPanel.Controls.Add(lblCVV, 1, 4); // Etiketi panela ekler
 
             TextBox txtCVV = new TextBox
             {
-                Font = new Font("Segoe UI", 12),
-                Dock = DockStyle.Fill,
-                MaxLength = 3
+                Font = new Font("Segoe UI", 12), // Yazı tipi ve boyutu
+                Dock = DockStyle.Fill, // Metin kutusunun paneli doldurmasını sağlar
+                MaxLength = 3 // Maksimum karakter sayısı
             };
-            mainPanel.Controls.Add(txtCVV, 2, 4);
+            mainPanel.Controls.Add(txtCVV, 2, 4); // Metin kutusunu panela ekler
 
-            this.Controls.Add(mainPanel);
+            this.Controls.Add(mainPanel); // Ana paneli forma ekler
 
             // Alt panel için butonlar
             TableLayoutPanel buttonPanel = new TableLayoutPanel
             {
-                Dock = DockStyle.Bottom,
-                ColumnCount = 2,
-                RowCount = 1,
-                BackColor = Color.Transparent,
-                Height = 50,
-                Margin = new Padding(0, 10, 0, 10)
+                Dock = DockStyle.Bottom, // Paneli formun altına yerleştirir
+                ColumnCount = 2, // Sütun sayısı
+                RowCount = 1, // Satır sayısı
+                BackColor = Color.Transparent, // Arka plan rengi
+                Height = 50, // Yükseklik
+                Margin = new Padding(0, 10, 0, 10) // Kenar boşlukları
             };
             buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
@@ -164,38 +171,38 @@ namespace SinemaBiletOtomasyonu
             // Geri butonu
             Button backButton = new Button
             {
-                Text = "Geri",
-                Width = 100,
-                Height = 35,
-                Margin = new Padding(10, 5, 5, 5),
-                BackColor = secondaryColor,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10),
-                Anchor = AnchorStyles.None
+                Text = "Geri", // Buton metni
+                Width = 100, // Buton genişliği
+                Height = 35, // Buton yüksekliği
+                Margin = new Padding(10, 5, 5, 5), // Kenar boşlukları
+                BackColor = secondaryColor, // Arka plan rengi
+                ForeColor = Color.White, // Yazı rengi
+                FlatStyle = FlatStyle.Flat, // Düz stil
+                Font = new Font("Segoe UI", 10), // Yazı tipi ve boyutu
+                Anchor = AnchorStyles.None // Butonun konumunu sabitler
             };
-            backButton.FlatAppearance.BorderSize = 0;
-            backButton.Click += (s, e) => this.Close();
-            buttonPanel.Controls.Add(backButton, 0, 0);
+            backButton.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+            backButton.Click += (s, e) => this.Close(); // Butona tıklama olayı
+            buttonPanel.Controls.Add(backButton, 0, 0); // Butonu panela ekler
 
             // Ödeme Yap butonu
             Button payButton = new Button
             {
-                Text = "Ödeme Yap",
-                Width = 100,
-                Height = 35,
-                Margin = new Padding(5, 5, 10, 5),
-                BackColor = primaryColor,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10),
-                Anchor = AnchorStyles.None
+                Text = "Ödeme Yap", // Buton metni
+                Width = 100, // Buton genişliği
+                Height = 35, // Buton yüksekliği
+                Margin = new Padding(5, 5, 10, 5), // Kenar boşlukları
+                BackColor = primaryColor, // Arka plan rengi
+                ForeColor = Color.White, // Yazı rengi
+                FlatStyle = FlatStyle.Flat, // Düz stil
+                Font = new Font("Segoe UI", 10), // Yazı tipi ve boyutu
+                Anchor = AnchorStyles.None // Butonun konumunu sabitler
             };
-            payButton.FlatAppearance.BorderSize = 0;
-            payButton.Click += PayButton_Click;
-            buttonPanel.Controls.Add(payButton, 1, 0);
+            payButton.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+            payButton.Click += PayButton_Click; // Butona tıklama olayı
+            buttonPanel.Controls.Add(payButton, 1, 0); // Butonu panela ekler
 
-            this.Controls.Add(buttonPanel);
+            this.Controls.Add(buttonPanel); // Buton panelini forma ekler
         }
 
         private void PayButton_Click(object sender, EventArgs e)
@@ -205,13 +212,13 @@ namespace SinemaBiletOtomasyonu
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    
+
                     // Koltuğu rezerve et ve IsOccupied'ı güncelle
                     string updateSeatQuery = @"
-                        UPDATE Seats 
-                        SET IsReserved = 1, 
-                            IsOccupied = 1 
-                        WHERE MovieID = @MovieID 
+                        UPDATE Seats
+                        SET IsReserved = 1,
+                            IsOccupied = 1
+                        WHERE MovieID = @MovieID
                         AND SeatNumber = @SeatNumber";
 
                     using (SqlCommand updateSeatCmd = new SqlCommand(updateSeatQuery, conn))
@@ -227,7 +234,7 @@ namespace SinemaBiletOtomasyonu
                         SELECT @UserID, @MovieID, s.SeatID, GETDATE(), @TotalAmount
                         FROM Seats s
                         WHERE s.MovieID = @MovieID AND s.SeatNumber = @SeatNumber";
-                    
+
                     using (SqlCommand insertBookingCmd = new SqlCommand(insertBookingQuery, conn))
                     {
                         insertBookingCmd.Parameters.AddWithValue("@UserID", _userId);
@@ -281,7 +288,7 @@ namespace SinemaBiletOtomasyonu
 
                     // Rezervasyonu kaydet
                     string insertBookingQuery = @"
-                        INSERT INTO Bookings (UserID, MovieID, SeatID, TotalAmount, BookingDate) 
+                        INSERT INTO Bookings (UserID, MovieID, SeatID, TotalAmount, BookingDate)
                         VALUES (@UserID, @MovieID, @SeatID, @TotalAmount, GETDATE())";
 
                     using (SqlCommand insertBookingCmd = new SqlCommand(insertBookingQuery, connection))

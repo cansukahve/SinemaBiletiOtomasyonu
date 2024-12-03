@@ -12,65 +12,67 @@ namespace SinemaBiletOtomasyonu
         private int _movieId;
         private string _seatNumber;
         private decimal _price;
-        private Color primaryColor = Color.FromArgb(51, 122, 183);
-        private Color secondaryColor = Color.FromArgb(217, 83, 79);
+        private Color primaryColor = Color.FromArgb(51, 122, 183); // Mavi
+        private Color secondaryColor = Color.FromArgb(217, 83, 79); // Kırmızı
 
         public TicketDetailsForm(int userId, int movieId, string seatNumber, decimal price)
         {
             InitializeComponent();
-            _userId = userId;
-            _movieId = movieId;
-            _seatNumber = seatNumber;
-            _price = price;
-            this.Size = new Size(400, 500);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            InitializeTicketDetails();
+            _userId = userId; // Kullanıcı ID'sini saklar
+            _movieId = movieId; // Film ID'sini saklar
+            _seatNumber = seatNumber; // Koltuk numarasını saklar
+            _price = price; // Fiyatı saklar
+            this.Size = new Size(400, 500); // Form boyutu
+            this.FormBorderStyle = FormBorderStyle.FixedDialog; // Formun kenarlık stilini belirler
+            this.MaximizeBox = false; // Formun büyütülmesini engeller
+            this.MinimizeBox = false; // Formun küçültülmesini engeller
+            this.StartPosition = FormStartPosition.CenterScreen; // Formun ekranın ortasında açılmasını sağlar
+            InitializeTicketDetails(); // Bilet detaylarını başlatır
         }
 
         private void InitializeTicketDetails()
         {
             try
             {
+                // Ana panel
                 TableLayoutPanel mainPanel = new TableLayoutPanel
                 {
-                    Dock = DockStyle.Fill,
-                    ColumnCount = 1,
-                    RowCount = 3,
-                    Padding = new Padding(20)
+                    Dock = DockStyle.Fill, // Paneli formun tamamına yayar
+                    ColumnCount = 1, // Sütun sayısı
+                    RowCount = 3, // Satır sayısı
+                    Padding = new Padding(20) // İçerikler arasındaki boşluk
                 };
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F)); // Üst satır stili
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70F)); // Orta satır stili
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 20F)); // Alt satır stili
 
                 // Başlık
                 Label lblTitle = new Label
                 {
-                    Text = "Bilet Detayları",
-                    Font = new Font("Segoe UI", 18, FontStyle.Bold),
-                    ForeColor = primaryColor,
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleCenter
+                    Text = "Bilet Detayları", // Başlık metni
+                    Font = new Font("Segoe UI", 18, FontStyle.Bold), // Yazı tipi, boyutu ve stili
+                    ForeColor = primaryColor, // Yazı rengi
+                    Dock = DockStyle.Fill, // Yazının paneli doldurmasını sağlar
+                    TextAlign = ContentAlignment.MiddleCenter // Yazının ortalanması
                 };
-                mainPanel.Controls.Add(lblTitle, 0, 0);
+                mainPanel.Controls.Add(lblTitle, 0, 0); // Başlığı panela ekler
 
                 // Bilet detayları paneli
                 Panel detailsPanel = new Panel
                 {
-                    Dock = DockStyle.Fill,
-                    AutoScroll = true,
-                    BackColor = Color.White,
-                    Padding = new Padding(10)
+                    Dock = DockStyle.Fill, // Paneli içine doldurur
+                    AutoScroll = true, // Otomatik kaydırma özelliği
+                    BackColor = Color.White, // Arka plan rengi
+                    Padding = new Padding(10) // İçerikler arasındaki boşluk
                 };
 
+                // Akış paneli
                 FlowLayoutPanel flowPanel = new FlowLayoutPanel
                 {
-                    Dock = DockStyle.Top,
-                    AutoSize = true,
-                    FlowDirection = FlowDirection.TopDown,
-                    WrapContents = false
+                    Dock = DockStyle.Top, // Paneli üste sabitler
+                    AutoSize = true, // Otomatik boyutlandırma
+                    FlowDirection = FlowDirection.TopDown, // Akış yönü
+                    WrapContents = false // İçerikleri satırda sığdığında alt satıra geçer
                 };
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -111,62 +113,62 @@ namespace SinemaBiletOtomasyonu
                     AddDetailRow(flowPanel, "Ücret:", _price.ToString("C2"));
                 }
 
-                detailsPanel.Controls.Add(flowPanel);
-                mainPanel.Controls.Add(detailsPanel, 0, 1);
+                detailsPanel.Controls.Add(flowPanel); // Akış panelini detay paneline ekler
+                mainPanel.Controls.Add(detailsPanel, 0, 1); // Detay panelini ana panela ekler
 
                 // Butonlar paneli
                 TableLayoutPanel buttonPanel = new TableLayoutPanel
                 {
-                    Dock = DockStyle.Fill,
-                    ColumnCount = 2,
-                    RowCount = 1,
-                    BackColor = Color.Transparent,
-                    Height = 50
+                    Dock = DockStyle.Fill, // Paneli içine doldurur
+                    ColumnCount = 2, // Sütun sayısı
+                    RowCount = 1, // Satır sayısı
+                    BackColor = Color.Transparent, // Arka plan rengi
+                    Height = 50 // Yükseklik
                 };
-                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F)); // Sütun stili
+                buttonPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F)); // Sütun stili
 
                 // Film Listesine Dön butonu
                 Button btnBack = new Button
                 {
-                    Text = "Geri",
-                    Width = 120,
-                    Height = 35,
-                    Margin = new Padding(5),
-                    BackColor = secondaryColor,
-                    ForeColor = Color.White,
-                    FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Segoe UI", 10),
-                    Anchor = AnchorStyles.None
+                    Text = "Geri", // Buton metni
+                    Width = 120, // Buton genişliği
+                    Height = 35, // Buton yüksekliği
+                    Margin = new Padding(5), // Kenar boşlukları
+                    BackColor = secondaryColor, // Arka plan rengi
+                    ForeColor = Color.White, // Yazı rengi
+                    FlatStyle = FlatStyle.Flat, // Düz stil
+                    Font = new Font("Segoe UI", 10), // Yazı tipi ve boyutu
+                    Anchor = AnchorStyles.None // Butonun konumunu sabitler
                 };
-                btnBack.FlatAppearance.BorderSize = 0;
+                btnBack.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
                 btnBack.Click += (s, e) =>
                 {
                     MovieSelectionForm movieForm = new MovieSelectionForm(_userId);
                     movieForm.Show();
                     this.Close();
                 };
-                buttonPanel.Controls.Add(btnBack, 0, 0);
+                buttonPanel.Controls.Add(btnBack, 0, 0); // Butonu panela ekler
 
                 // Kapat butonu
                 Button btnClose = new Button
                 {
-                    Text = "Kapat",
-                    Width = 100,
-                    Height = 35,
-                    Margin = new Padding(5),
-                    BackColor = primaryColor,
-                    ForeColor = Color.White,
-                    FlatStyle = FlatStyle.Flat,
-                    Font = new Font("Segoe UI", 10),
-                    Anchor = AnchorStyles.None
+                    Text = "Kapat", // Buton metni
+                    Width = 100, // Buton genişliği
+                    Height = 35, // Buton yüksekliği
+                    Margin = new Padding(5), // Kenar boşlukları
+                    BackColor = primaryColor, // Arka plan rengi
+                    ForeColor = Color.White, // Yazı rengi
+                    FlatStyle = FlatStyle.Flat, // Düz stil
+                    Font = new Font("Segoe UI", 10), // Yazı tipi ve boyutu
+                    Anchor = AnchorStyles.None // Butonun konumunu sabitler
                 };
-                btnClose.FlatAppearance.BorderSize = 0;
-                btnClose.Click += (s, e) => this.Close();
-                buttonPanel.Controls.Add(btnClose, 1, 0);
+                btnClose.FlatAppearance.BorderSize = 0; // Kenarlık boyutu
+                btnClose.Click += (s, e) => this.Close(); // Butona tıklama olayı
+                buttonPanel.Controls.Add(btnClose, 1, 0); // Butonu panela ekler
 
-                mainPanel.Controls.Add(buttonPanel, 0, 2);
-                this.Controls.Add(mainPanel);
+                mainPanel.Controls.Add(buttonPanel, 0, 2); // Buton panelini ana panela ekler
+                this.Controls.Add(mainPanel); // Ana paneli forma ekler
             }
             catch (Exception ex)
             {
