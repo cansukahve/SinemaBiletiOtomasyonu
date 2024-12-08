@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinemaBiletOtomasyonu", "SinemaBiletOtomasyonu\SinemaBiletOtomasyonu.csproj", "{C9362404-307E-469F-8F7A-0266E3FA86FB}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupProject", "SetupProject\SetupProject.vdproj", "{F923817C-68C9-43AC-A1E4-20E1C45C80B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{C9362404-307E-469F-8F7A-0266E3FA86FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9362404-307E-469F-8F7A-0266E3FA86FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9362404-307E-469F-8F7A-0266E3FA86FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F923817C-68C9-43AC-A1E4-20E1C45C80B6}.Debug|Any CPU.ActiveCfg = Debug
+		{F923817C-68C9-43AC-A1E4-20E1C45C80B6}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
